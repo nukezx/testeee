@@ -1,0 +1,4 @@
+-- Key Link: https://kylndantas-key-system.kylndantas.repl.co/key
+getgenv().isPermanent = false;
+getgenv().key = 'RHP0ouulPevmexMlIyAzFrYkzavL6xvg'
+loadstring(game:HttpGet("https://loader.kylndantas.repl.co"))()
