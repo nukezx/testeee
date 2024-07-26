@@ -1,0 +1,251 @@
+local v0 = string.char
+local v1 = string.byte
+local v2 = string.sub
+local v3 = bit32 or bit
+local v4 = v3.bxor
+local v5 = table.concat
+local v6 = table.insert
+
+local function v7(v51, v52)
+    local v53 = {}
+    for v98 = 1, #v51 do
+        v6(v53, v0(v4(v1(v2(v51, v98, v98 + 1)), v1(v2(v52, 1 + (v98 % #v52), 1 + (v98 % #v52) + 1))) % 256))
+    end
+    return v5(v53)
+end
+
+local key = "\123\45\67\89\34\23\45\67" -- Chave de criptografia arbitrária
+
+local function encryptString(str)
+    return v7(str, key)
+end
+
+local CoreGui = game:GetService(encryptString("StarterGui"))
+local Players = game:GetService(encryptString("Players"))
+
+local function isNumber(str)
+    if tonumber(str) ~= nil or str == encryptString('inf') then
+        return true
+    end
+end
+
+getgenv().HitboxSize = 15
+getgenv().HitboxTransparency = 0.9
+
+getgenv().HitboxStatus = false
+getgenv().TeamCheck = false
+
+getgenv().Walkspeed = game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.WalkSpeed
+getgenv().Jumppower = game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.JumpPower
+
+getgenv().TPSpeed = 3
+getgenv().TPWalk = false
+
+local Library = loadstring(game:HttpGet(encryptString("https://raw.githubusercontent.com/Vcsk/UI-Library/main/Source/MyUILib(Unamed).lua")))()
+local Window = Library:Create(encryptString("Hitbox Expander"))
+
+local ToggleGui = Instance.new(encryptString("ScreenGui"))
+local Toggle = Instance.new(encryptString("TextButton"))
+
+ToggleGui.Name = encryptString("ToggleGui_HE")
+ToggleGui.Parent = game.CoreGui
+
+Toggle.Name = encryptString("Toggle")
+Toggle.Parent = ToggleGui
+Toggle.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+Toggle.BackgroundTransparency = 0.660
+Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
+Toggle.Size = UDim2.new(0.0650164187, 0, 0.0888099447, 0)
+Toggle.Font = Enum.Font.SourceSans
+Toggle.Text = encryptString("Toggle")
+Toggle.TextScaled = true
+Toggle.TextColor3 = Color3.fromRGB(40, 40, 40)
+Toggle.TextSize = 24.000
+Toggle.TextXAlignment = Enum.TextXAlignment.Left
+Toggle.Active = true
+Toggle.Draggable = true
+Toggle.MouseButton1Click:connect(function()
+    Library:ToggleUI()
+end)
+
+local HomeTab = Window:Tab(encryptString("Home"), encryptString("rbxassetid://10888331510"))
+local PlayerTab = Window:Tab(encryptString("Players"), encryptString("rbxassetid://12296135476"))
+local VisualTab = Window:Tab(encryptString("Visuals"), encryptString("rbxassetid://12308581351"))
+
+HomeTab:InfoLabel(encryptString("only works on some games!"))
+
+HomeTab:Section(encryptString("Settings"))
+
+HomeTab:TextBox(encryptString("Hitbox Size"), function(value)
+    getgenv().HitboxSize = value
+end)
+
+HomeTab:TextBox(encryptString("Hitbox Transparency"), function(number)
+    getgenv().HitboxTransparency = number
+end)
+
+HomeTab:Section(encryptString("Main"))
+
+HomeTab:Toggle(encryptString("Status: "), function(state)
+    getgenv().HitboxStatus = state
+    game:GetService(encryptString('RunService')).RenderStepped:connect(function()
+        if HitboxStatus == true and TeamCheck == false then
+            for i, v in next, game:GetService(encryptString('Players')):GetPlayers() do
+                if v.Name ~= game:GetService(encryptString('Players')).LocalPlayer.Name then
+                    pcall(function()
+                        v.Character.HumanoidRootPart.Size = Vector3.new(HitboxSize, HitboxSize, HitboxSize)
+                        v.Character.HumanoidRootPart.Transparency = HitboxTransparency
+                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new(encryptString("Really black"))
+                        v.Character.HumanoidRootPart.Material = encryptString("Neon")
+                        v.Character.HumanoidRootPart.CanCollide = false
+                    end)
+                end
+            end
+        elseif HitboxStatus == true and TeamCheck == true then
+            for i, v in next, game:GetService(encryptString('Players')):GetPlayers() do
+                if game:GetService(encryptString('Players')).LocalPlayer.Team ~= v.Team then
+                    pcall(function()
+                        v.Character.HumanoidRootPart.Size = Vector3.new(HitboxSize, HitboxSize, HitboxSize)
+                        v.Character.HumanoidRootPart.Transparency = HitboxTransparency
+                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new(encryptString("Really black"))
+                        v.Character.HumanoidRootPart.Material = encryptString("Neon")
+                        v.Character.HumanoidRootPart.CanCollide = false
+                    end)
+                end
+            end
+        else
+            for i, v in next, game:GetService(encryptString('Players')):GetPlayers() do
+                if v.Name ~= game:GetService(encryptString('Players')).LocalPlayer.Name then
+                    pcall(function()
+                        v.Character.HumanoidRootPart.Size = Vector3.new(2, 2, 1)
+                        v.Character.HumanoidRootPart.Transparency = 1
+                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new(encryptString("Medium stone grey"))
+                        v.Character.HumanoidRootPart.Material = encryptString("Plastic")
+                        v.Character.HumanoidRootPart.CanCollide = false
+                    end)
+                end
+            end
+        end
+    end)
+end)
+
+HomeTab:Toggle(encryptString("Team Check"), function(state)
+    getgenv().TeamCheck = state
+end)
+
+HomeTab:Keybind(encryptString("Toggle UI"), Enum.KeyCode.F, function()
+    Library:ToggleUI()
+end)
+
+PlayerTab:TextBox(encryptString("WalkSpeed"), function(value)
+    getgenv().Walkspeed = value
+    pcall(function()
+        game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end)
+end)
+
+PlayerTab:Toggle(encryptString("Loop WalkSpeed"), function(state)
+    getgenv().loopW = state
+    game:GetService(encryptString("RunService")).Heartbeat:Connect(function()
+        if loopW == true then
+            pcall(function()
+                game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.WalkSpeed = Walkspeed
+            end)
+        end
+    end)
+end)
+
+PlayerTab:TextBox(encryptString("JumpPower"), function(value)
+    getgenv().Jumppower = value
+    pcall(function()
+        game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.JumpPower = value
+    end)
+end)
+
+PlayerTab:Toggle(encryptString("Loop JumpPower"), function(state)
+    getgenv().loopJ = state
+    game:GetService(encryptString("RunService")).Heartbeat:Connect(function()
+        if loopJ == true then
+            pcall(function()
+                game:GetService(encryptString("Players")).LocalPlayer.Character.Humanoid.JumpPower = Jumppower
+            end)
+        end
+    end)
+end)
+
+PlayerTab:TextBox(encryptString("TP Speed"), function(value)
+    getgenv().TPSpeed = value
+end)
+
+PlayerTab:Toggle(encryptString("TP Walk"), function(s)
+    getgenv().TPWalk = s
+    local hb = game:GetService(encryptString("RunService")).Heartbeat
+    local player = game:GetService(encryptString("Players"))
+    local lplr = player.LocalPlayer
+    local chr = lplr.Character
+    local hum = chr and chr:FindFirstChildWhichIsA(encryptString("Humanoid"))
+    while getgenv().TPWalk and hb:Wait() and chr and hum and hum.Parent do
+        if hum.MoveDirection.Magnitude > 0 then
+            if getgenv().TPSpeed and isNumber(getgenv().TPSpeed) then
+                chr:TranslateBy(hum.MoveDirection * tonumber(getgenv().TPSpeed))
+            else
+                chr:TranslateBy(hum.MoveDirection)
+            end
+        end
+    end
+end)
+
+PlayerTab:Slider(encryptString("Fov"), game.Workspace.CurrentCamera.FieldOfView, 120, function(v)
+    game.Workspace.CurrentCamera.FieldOfView = v
+end)
+
+PlayerTab:Toggle(encryptString("Noclip"), function(s)
+    getgenv().Noclip = s
+    game:GetService(encryptString("RunService")).Heartbeat:Connect(function()
+        if Noclip == true then
+            game:GetService(encryptString("RunService")).Stepped:wait()
+            game.Players.LocalPlayer.Character.Head.CanCollide = false
+            game.Players.LocalPlayer.Character.Torso.CanCollide = false
+        end
+    end)
+end)
+
+PlayerTab:Toggle(encryptString("Infinite Jump"), function(s)
+    getgenv().InfJ = s
+    game:GetService(encryptString("UserInputService")).JumpRequest:connect(function()
+        if InfJ == true then
+            game:GetService(encryptString("Players")).LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState(encryptString("Jumping"))
+        end
+    end)
+end)
+
+PlayerTab:Button(encryptString("Rejoin"), function()
+    game:GetService(encryptString("TeleportService")):Teleport(game.PlaceId, game:GetService(encryptString("Players")).LocalPlayer)
+end)
+
+VisualTab:InfoLabel(encryptString("Wait 3-10 seconds"))
+
+VisualTab:Toggle(encryptString("Character Highlight"), function(state)
+    getgenv().enabled = state
+    getgenv().filluseteamcolor = true
+    getgenv().outlineuseteamcolor = true
+    getgenv().fillcolor = Color3.new(0, 0, 0)
+    getgenv().outlinecolor = Color3.new(1, 1, 1)
+    getgenv().filltrans = 0.5
+    getgenv().outlinetrans = 0.5
+
+    loadstring(game:HttpGet(encryptString("https://raw.githubusercontent.com/Vcsk/RobloxScripts/main/Highlight-ESP.lua")))()
+end)
+
+if game.PlaceId == 3082002798 then
+    local GamesTab = Window:Tab(encryptString("Games"), encryptString("rbxassetid://15426471035"))
+    GamesTab:InfoLabel(encryptString("Game: ")..game:GetService(encryptString("MarketplaceService")):GetProductInfo(game.PlaceId).Name)
+    GamesTab:Button(encryptString("No Cooldown"), function()
+        for i, v in pairs(game:GetService(encryptString('ReplicatedStorage'))[encryptString('Shared_Modules')].Tools:GetDescendants()) do
+            if v:IsA(encryptString('ModuleScript')) then
+                local Module = require(v)
+                Module.DEBOUNCE = 0
+            end
+        end
+    end)
+end
