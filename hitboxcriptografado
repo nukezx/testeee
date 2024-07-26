@@ -9,12 +9,12 @@ local v6 = table.insert
 local function v7(v51, v52)
     local v53 = {}
     for v98 = 1, #v51 do
-        v6(v53, v0(v4(v1(v2(v51, v98, v98 + 1)), v1(v2(v52, 1 + (v98 % #v52), 1 + (v98 % #v52) + 1))) % 256))
+        v6(v53, v0(v4(v1(v2(v51, v98, v98)), v1(v2(v52, 1 + (v98 % #v52), 1 + (v98 % #v52)))) % 256))
     end
     return v5(v53)
 end
 
-local key = "\123\45\67\89\34\23\45\67" -- Chave de criptografia arbitrária
+local key = "my_secret_key"
 
 local function encryptString(str)
     return v7(str, key)
@@ -239,7 +239,7 @@ end)
 
 if game.PlaceId == 3082002798 then
     local GamesTab = Window:Tab(encryptString("Games"), encryptString("rbxassetid://15426471035"))
-    GamesTab:InfoLabel(encryptString("Game: ")..game:GetService(encryptString("MarketplaceService")):GetProductInfo(game.PlaceId).Name)
+    GamesTab:InfoLabel(encryptString("Game: ") .. game:GetService(encryptString("MarketplaceService")):GetProductInfo(game.PlaceId).Name)
     GamesTab:Button(encryptString("No Cooldown"), function()
         for i, v in pairs(game:GetService(encryptString('ReplicatedStorage'))[encryptString('Shared_Modules')].Tools:GetDescendants()) do
             if v:IsA(encryptString('ModuleScript')) then
